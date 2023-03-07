@@ -20,6 +20,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    //Test this to see how it handles. SHOULD (?) make for a smoother driving experience? Maybe?
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
         drivetrain.driveArcade(
@@ -28,6 +29,9 @@ public class RobotContainer {
       , drivetrain)
     );
 
+    // If the above doesn't work, this should.
+    // drivetrain.setDefaultCommand(
+    //   new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()),drivetrain));
   }
 
   public Command getAutonomousCommand() {

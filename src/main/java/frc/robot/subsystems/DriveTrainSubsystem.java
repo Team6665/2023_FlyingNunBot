@@ -27,9 +27,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     rightMotors.setInverted(true);
   }
 
-  public void driveArcade(double _straight, double _turn) {
-    double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
-    double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
+  public void arcadeDrive(double fwd, double rot) {
+    robotDrive.arcadeDrive(fwd, rot);
+  }
+
+  public void driveArcade(double straight, double turn) {
+    double left  = MathUtil.clamp(straight + turn, -1.0, 1.0);
+    double right = MathUtil.clamp(straight - turn, -1.0, 1.0);
+
+    //I think this should normalize the output, but I might be just repeating what the motorcontroller code does.
+    //Make sure to test with and without this
+    frontLeftMotor.set(left);
+    frontRightMotor.set(right);
+    backLeftMotor.set(left);
+    backRightMotor.set(right);
   }
 
   @Override
