@@ -21,17 +21,17 @@ public class RobotContainer {
 
   private void configureBindings() {
     //Test this to see how it handles. SHOULD (?) make for a smoother driving experience? Maybe?
-    drivetrain.setDefaultCommand(new RunCommand(
-      () -> 
-        drivetrain.driveArcade(
-          MathUtil.applyDeadband(-driverController.getLeftY(), Constants.OIConstants.kDriveDeadband),
-          MathUtil.applyDeadband(driverController.getRightX()*Constants.DriveTrainConstants.kTurningScale, Constants.OIConstants.kDriveDeadband))
-      , drivetrain)
-    );
+    // drivetrain.setDefaultCommand(new RunCommand(
+    //   () -> 
+    //     drivetrain.driveArcade(
+    //       MathUtil.applyDeadband(-driverController.getLeftY(), Constants.OIConstants.kDriveDeadband),
+    //       MathUtil.applyDeadband(driverController.getRightX()*Constants.DriveTrainConstants.kTurningScale, Constants.OIConstants.kDriveDeadband))
+    //   , drivetrain)
+    // );
 
     // If the above doesn't work, this should.
-    // drivetrain.setDefaultCommand(
-    //   new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()),drivetrain));
+    drivetrain.setDefaultCommand(
+      new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), driverController.getRightX()),drivetrain));
   }
 
   public Command getAutonomousCommand() {
