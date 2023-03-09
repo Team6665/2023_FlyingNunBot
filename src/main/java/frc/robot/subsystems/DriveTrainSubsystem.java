@@ -10,9 +10,19 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveTrainConstants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.CANSparkMaxLowLevel;
+// import com.revrobotics.CANSparkMax.IdleMode;
 
 
 public class DriveTrainSubsystem extends SubsystemBase {
+  // private CANSparkMax m_frontLeftMotor;
+  // private CANSparkMax m_frontRightMotor;
+  // private CANSparkMax m_rearLeftMotor;
+  // private CANSparkMax m_rearRightMotor;
+
+  
+
   WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(DriveTrainConstants.FrontLeftMotorPort);
   WPI_TalonSRX backLeftMotor =  new WPI_TalonSRX(DriveTrainConstants.RearLeftMotorPort);
   WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(DriveTrainConstants.FrontRightMotorPort);
