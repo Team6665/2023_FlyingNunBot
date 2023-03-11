@@ -87,6 +87,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     frontRightPIDController.setIZone(Constants.DriveTrainPIDConstants.kIz);
     frontRightPIDController.setFF(Constants.DriveTrainPIDConstants.kFF);
     frontRightPIDController.setOutputRange(Constants.DriveTrainPIDConstants.kMinOutput, Constants.DriveTrainPIDConstants.kMaxOutput);
+    frontRightPIDController.setSmartMotionMaxVelocity(Constants.DriveTrainPIDConstants.maxVel, Constants.DriveTrainPIDConstants.frontRightsmartMotionSlot);
+    frontRightPIDController.setSmartMotionMinOutputVelocity(Constants.DriveTrainPIDConstants.minVel, Constants.DriveTrainPIDConstants.frontRightsmartMotionSlot);
+    frontRightPIDController.setSmartMotionMaxAccel(Constants.DriveTrainPIDConstants.maxAcc, Constants.DriveTrainPIDConstants.frontRightsmartMotionSlot);
+    frontRightPIDController.setSmartMotionAllowedClosedLoopError(Constants.DriveTrainPIDConstants.allowedErr, Constants.DriveTrainPIDConstants.frontRightsmartMotionSlot);
 
     backLeftPIDController.setP(Constants.DriveTrainPIDConstants.kP);
     backLeftPIDController.setI(Constants.DriveTrainPIDConstants.kI);
@@ -94,6 +98,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     backLeftPIDController.setIZone(Constants.DriveTrainPIDConstants.kIz);
     backLeftPIDController.setFF(Constants.DriveTrainPIDConstants.kFF);
     backLeftPIDController.setOutputRange(Constants.DriveTrainPIDConstants.kMinOutput, Constants.DriveTrainPIDConstants.kMaxOutput);
+    backLeftPIDController.setSmartMotionMaxVelocity(Constants.DriveTrainPIDConstants.maxVel, Constants.DriveTrainPIDConstants.backLeftsmartMotionSlot);
+    backLeftPIDController.setSmartMotionMinOutputVelocity(Constants.DriveTrainPIDConstants.minVel, Constants.DriveTrainPIDConstants.backLeftsmartMotionSlot);
+    backLeftPIDController.setSmartMotionMaxAccel(Constants.DriveTrainPIDConstants.maxAcc, Constants.DriveTrainPIDConstants.backLeftsmartMotionSlot);
+    backLeftPIDController.setSmartMotionAllowedClosedLoopError(Constants.DriveTrainPIDConstants.allowedErr, Constants.DriveTrainPIDConstants.backLeftsmartMotionSlot);
+
 
     backRightPIDController.setP(Constants.DriveTrainPIDConstants.kP);
     backRightPIDController.setI(Constants.DriveTrainPIDConstants.kI);
@@ -101,6 +110,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     backRightPIDController.setIZone(Constants.DriveTrainPIDConstants.kIz);
     backRightPIDController.setFF(Constants.DriveTrainPIDConstants.kFF);
     backRightPIDController.setOutputRange(Constants.DriveTrainPIDConstants.kMinOutput, Constants.DriveTrainPIDConstants.kMaxOutput);
+    backRightPIDController.setSmartMotionMaxVelocity(Constants.DriveTrainPIDConstants.maxVel, Constants.DriveTrainPIDConstants.backRightsmartMotionSlot);
+    backRightPIDController.setSmartMotionMinOutputVelocity(Constants.DriveTrainPIDConstants.minVel, Constants.DriveTrainPIDConstants.backRightsmartMotionSlot);
+    backRightPIDController.setSmartMotionMaxAccel(Constants.DriveTrainPIDConstants.maxAcc, Constants.DriveTrainPIDConstants.backRightsmartMotionSlot);
+    backRightPIDController.setSmartMotionAllowedClosedLoopError(Constants.DriveTrainPIDConstants.allowedErr, Constants.DriveTrainPIDConstants.backRightsmartMotionSlot);
 
     
 
