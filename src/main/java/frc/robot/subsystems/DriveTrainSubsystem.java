@@ -35,7 +35,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder backRighEncoder;
 
 
-
   // WPI_TalonSRX frontLeftMotor = new WPI_TalonSRX(DriveTrainConstants.FrontLeftMotorPort);
   // WPI_TalonSRX backLeftMotor =  new WPI_TalonSRX(DriveTrainConstants.RearLeftMotorPort);
   // WPI_TalonSRX frontRightMotor = new WPI_TalonSRX(DriveTrainConstants.FrontRightMotorPort);
@@ -70,6 +69,40 @@ public class DriveTrainSubsystem extends SubsystemBase {
     backRightMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
     backRightMotor.setIdleMode(IdleMode.kBrake);
     backRightMotor.burnFlash();
+
+    frontLeftPIDController.setP(Constants.DriveTrainPIDConstants.kP);
+    frontLeftPIDController.setI(Constants.DriveTrainPIDConstants.kI);
+    frontLeftPIDController.setD(Constants.DriveTrainPIDConstants.kD);
+    frontLeftPIDController.setIZone(Constants.DriveTrainPIDConstants.kIz);
+    frontLeftPIDController.setFF(Constants.DriveTrainPIDConstants.kFF);
+    frontLeftPIDController.setOutputRange(Constants.DriveTrainPIDConstants.kMinOutput, Constants.DriveTrainPIDConstants.kMaxOutput);
+    frontLeftPIDController.setSmartMotionMaxVelocity(Constants.DriveTrainPIDConstants.maxVel, Constants.DriveTrainPIDConstants.frontLeftsmartMotionSlot);
+    frontLeftPIDController.setSmartMotionMinOutputVelocity(Constants.DriveTrainPIDConstants.minVel, Constants.DriveTrainPIDConstants.frontLeftsmartMotionSlot);
+    frontLeftPIDController.setSmartMotionMaxAccel(Constants.DriveTrainPIDConstants.maxAcc, Constants.DriveTrainPIDConstants.frontLeftsmartMotionSlot);
+    frontLeftPIDController.setSmartMotionAllowedClosedLoopError(Constants.DriveTrainPIDConstants.allowedErr, Constants.DriveTrainPIDConstants.frontLeftsmartMotionSlot);
+
+    frontRightPIDController.setP(Constants.DriveTrainPIDConstants.kP);
+    frontRightPIDController.setI(Constants.DriveTrainPIDConstants.kI);
+    frontRightPIDController.setD(Constants.DriveTrainPIDConstants.kD);
+    frontRightPIDController.setIZone(Constants.DriveTrainPIDConstants.kIz);
+    frontRightPIDController.setFF(Constants.DriveTrainPIDConstants.kFF);
+    frontRightPIDController.setOutputRange(Constants.DriveTrainPIDConstants.kMinOutput, Constants.DriveTrainPIDConstants.kMaxOutput);
+
+    backLeftPIDController.setP(Constants.DriveTrainPIDConstants.kP);
+    backLeftPIDController.setI(Constants.DriveTrainPIDConstants.kI);
+    backLeftPIDController.setD(Constants.DriveTrainPIDConstants.kD);
+    backLeftPIDController.setIZone(Constants.DriveTrainPIDConstants.kIz);
+    backLeftPIDController.setFF(Constants.DriveTrainPIDConstants.kFF);
+    backLeftPIDController.setOutputRange(Constants.DriveTrainPIDConstants.kMinOutput, Constants.DriveTrainPIDConstants.kMaxOutput);
+
+    backRightPIDController.setP(Constants.DriveTrainPIDConstants.kP);
+    backRightPIDController.setI(Constants.DriveTrainPIDConstants.kI);
+    backRightPIDController.setD(Constants.DriveTrainPIDConstants.kD);
+    backRightPIDController.setIZone(Constants.DriveTrainPIDConstants.kIz);
+    backRightPIDController.setFF(Constants.DriveTrainPIDConstants.kFF);
+    backRightPIDController.setOutputRange(Constants.DriveTrainPIDConstants.kMinOutput, Constants.DriveTrainPIDConstants.kMaxOutput);
+
+    
 
     rightMotors.setInverted(true);
 
