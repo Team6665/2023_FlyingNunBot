@@ -12,20 +12,35 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class LimelightSubsystem extends SubsystemBase {
+
+  NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   
-  private final NetworkTable mNetworkTable;
-  private static LimelightSubsystem mInstance;
+  NetworkTableEntry tx;
+  NetworkTableEntry ty;
+  NetworkTableEntry ta;
 
-
+  private double x;
+  private double y;
+  private double area;
 
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem() {
-    mNetworkTable = NetworkTableInstance.getDefault().getTable("limelight");
+    tx = table.getEntry("tx");
+    ty = table.getEntry("ty");
+    ta = table.getEntry("ta");
+
+    double x = tx.getDouble(0.0);
+    double y = ty.getDouble(0.0);
+    double area = ta.getDouble(0.0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+        //post to smart dashboard periodically
+        SmartDashboard.putNumber("LimelightX", x);
+        SmartDashboard.putNumber("LimelightY", y);
+        SmartDashboard.putNumber("LimelightArea", area);
   }
 }
