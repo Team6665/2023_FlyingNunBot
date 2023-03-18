@@ -12,10 +12,10 @@ public final class Constants {
   }
 
   public static final class DriveTrainConstants {
-    public static final int kFrontLeftCanId = 1;
-    public static final int kRearLeftCanId = 0;
-    public static final int kFrontRightCanId = 3;
-    public static final int kRearRightCanId = 2;
+    public static final int kFrontLeftCanId = 15;
+    public static final int kRearLeftCanId = 14;
+    public static final int kFrontRightCanId = 13;
+    public static final int kRearRightCanId = 12;
 
     public static final boolean kFrontLeftInverted = true;
     public static final boolean kFrontRightInverted = false;
@@ -23,10 +23,9 @@ public final class Constants {
     public static final boolean kRearRightInverted = false;
 
     public static final int FrontLeftsmartMotionSlot = 0;
-    public static final int FrontRightsmartMotionSlot = 0;
-    public static final int RearLeftsmartMotionSlot = 0;
-    public static final int RearRightsmartMotionSlot = 0;
-
+    public static final int FrontRightsmartMotionSlot = 1;
+    public static final int RearLeftsmartMotionSlot = 2;
+    public static final int RearRightsmartMotionSlot = 3;
 
     public static final int kP = 1;
     public static final int kI = 1;
