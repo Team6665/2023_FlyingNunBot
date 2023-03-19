@@ -12,6 +12,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class LimelightSubsystem extends SubsystemBase {
+  double[] limelightOutputArray;
+  double[] defaultLimelightOutputArray = {-1, -1, -1, -1, -1, -1, -1, -1};
 
   NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
   
@@ -26,6 +28,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
   /** Creates a new LimelightSubsystem. */
   public LimelightSubsystem() {
+
+    limelightOutputArray = defaultLimelightOutputArray;
+
     tx = table.getEntry("tx");
     ty = table.getEntry("ty");
     ta = table.getEntry("ta");

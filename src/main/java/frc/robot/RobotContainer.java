@@ -22,6 +22,10 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
+
+    drivetrain.setDefaultCommand(
+      new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), -driverController.getRightX()),drivetrain));
+      
   }
 
   private void configureBindings() {
@@ -35,8 +39,7 @@ public class RobotContainer {
     // );
 
     // If the above doesn't work, this should.
-    drivetrain.setDefaultCommand(
-      new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), -driverController.getRightX()),drivetrain));
+
   }
 
   public Command getAutonomousCommand() {
