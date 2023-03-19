@@ -8,7 +8,7 @@ package frc.robot;
 public final class Constants {
   public static class OIConstants {
     public static final int DriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.05;
+    public static final double kDriveDeadband = 0.2;
   }
 
   public static final class DriveTrainConstants {
@@ -37,6 +37,19 @@ public final class Constants {
 
     public static final int kCurrentLimit = 55;
     public static final double kTurningScale = 0.5;
+
+    public static final double speedScale = 0.8;
+    public static final double minDrivePowerTurn = 0.35;
+
+    public static final double minDrivePower = 0.1;
+    public static final double maxDriveSpeed = 0.7;
+    public static final double maxSpeed = 3;
+    public static final double maxAcceleration = 3;
+  }
+
+  public static class TurningConstants{
+    private static final double kAngleSetpoint = 0.0;
+    private static final double kP = 0.005; // propotional turning constant
   }
 
   public static class DriveTrainPIDConstants{
