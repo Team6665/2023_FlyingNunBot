@@ -7,20 +7,25 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SPI; 
+
 import frc.robot.Constants;
+import frc.robot.lib.PIDGains;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxRelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SPI;
+import com.revrobotics.RelativeEncoder;
 
+import com.kauailabs.navx.frc.AHRS;
 
 public class DriveTrainSubsystem extends SubsystemBase {
   private final AHRS gyro = new AHRS(SPI.Port.kMXP);
@@ -41,8 +46,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder backLeftEncoder;
   private RelativeEncoder backRightEncoder;
 
-  private Encoder leftEncoder;
-  private Encoder rightEncoder;
+  private RelativeEncoder leftEncoder;
+  private RelativeEncoder rightEncoder;
   
   private MotorControllerGroup leftMotors;
   private MotorControllerGroup rightMotors;
@@ -62,20 +67,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftMotors = new  MotorControllerGroup(frontLeftMotor,backLeftMotor);
     rightMotors = new MotorControllerGroup(frontRightMotor, backRightMotor);
     
-    // frontLeftEncoder = frontLeftMotor.getEncoder();
-    // frontRightEncoder = frontRightMotor.getEncoder();
-    // backLeftEncoder = backLeftMotor.getEncoder();
-    // backRightEncoder = backRightMotor.getEncoder();
+    frontLeftEncoder = frontLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    frontRightEncoder = frontRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    backLeftEncoder = backLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    backRightEncoder = backRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
-    leftEncoder = null; //frontLeftMotor.getEncoder();
-    rightEncoder = null; //frontRightMotor.getEncoder();
+    leftEncoder = frontLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    rightEncoder = frontRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     frontLeftPIDController = frontLeftMotor.getPIDController();
     frontRightPIDController = frontRightMotor.getPIDController();
     backLeftPIDController = backLeftMotor.getPIDController();
     backRightPIDController = backRightMotor.getPIDController();
 
-    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), getLeftEncoderDistance(), getRightEncoderDistance());
+    //odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), getLeftEncoderDistance(), getRightEncoderDistance());
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
     rightMotors.setInverted(true);
@@ -83,8 +88,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
     drive.setDeadband(0.2); // Scales joystick values. 0.02 is the default
     drive.setMaxOutput(Constants.DriveTrainConstants.speedScale);
 
-    leftEncoder.setDistancePerPulse(6.0 * 0.0254 * Math.PI / 2048); // 6 inch wheel, to meters, 2048 ticks
-    rightEncoder.setDistancePerPulse(6.0 * 0.0254 * Math.PI / 2048); // 6 inch wheel, to meters, 2048 ticks
+    // leftEncoder.setDistancePerPulse(6.0 * 0.0254 * Math.PI / 2048); // 6 inch wheel, to meters, 2048 ticks
+    // rightEncoder.setDistancePerPulse(6.0 * 0.0254 * Math.PI / 2048); // 6 inch wheel, to meters, 2048 ticks
     // encoderPID = new PIDController(9, 0, 0);
 
     gyro.reset();
@@ -167,26 +172,37 @@ public class DriveTrainSubsystem extends SubsystemBase {
     drive.tankDrive(leftPower, rightPower); // Calls WPILib DifferentialDrive method tankDrive(LSpeed, RSpeed)
   }
 
+  public void driveArcade(double _straight, double _turn) {
+    double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
+    double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
+
+    frontLeftMotor.set(left);
+    frontRightMotor.set(right);
+    backLeftMotor.set(left);
+    backRightMotor.set(right);
+  }
+
+
   public void arcadeDrive(double xSpeed, double zRotation) {
     // Account for changes in turning when the forward direction changes, if it doesn't work use the one above
     drive.arcadeDrive(xSpeed * maxDriverSpeed, maxDriverSpeed < 0 ? zRotation * maxDriverSpeed : -zRotation * maxDriverSpeed);
   }
 
-  public void resetLeftEncoder() {
-      leftEncoder.reset();
-  }
+  // public void resetLeftEncoder() {
+  //     leftEncoder.reset();
+  // }
 
-  public void resetRightEncoder() {
-      rightEncoder.reset();
-  }
+  // public void resetRightEncoder() {
+  //     rightEncoder.reset();
+  // }
 
-  public double getRightEncoderDistance() {
-      return rightEncoder.getDistance(); // Scaled to imperial from setDistancePerPulse
-  }
+  // public double getRightEncoderDistance() {
+  //     return rightEncoder.getDistance(); // Scaled to imperial from setDistancePerPulse
+  // }
 
-  public double getLeftEncoderDistance() {
-      return leftEncoder.getDistance(); // Scaled to imperial from setDistancePerPulse
-  }
+  // public double getLeftEncoderDistance() {
+  //     return leftEncoder.getDistance(); // Scaled to imperial from setDistancePerPulse
+  // }
 
   public Pose2d getPose() {
     return odometry.getPoseMeters();
@@ -200,25 +216,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     return gyro.getPitch();
   }
   
-  public void resetOdometry(Pose2d pose) {
-      resetEncoders();
-      odometry.resetPosition(gyro.getRotation2d(), getLeftEncoderDistance(), getRightEncoderDistance(), pose);
-  }
+  // public void resetOdometry(Pose2d pose) {
+  //   odometry.resetPosition(gyro.getRotation2d(), getLeftEncoderDistance(), getRightEncoderDistance(), pose);
+  // }
   
-  public void resetEncoders() {
-    leftEncoder.reset();
-    rightEncoder.reset();
-  }
 
-  public double getAverageEncoderDistance() {
-    return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
-  }
+  // public double getAverageEncoderDistance() {
+  //   return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
+  // }
   
-  public Encoder getLeftEncoder() {
+  public RelativeEncoder getLeftEncoder() {
     return leftEncoder;
   }
   
-  public Encoder getRightEncoder() {
+  public RelativeEncoder getRightEncoder() {
     return rightEncoder;
   }
   
@@ -241,7 +252,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // SubsystemBase native method
-    odometry.update(gyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
+    //odometry.update(gyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
     
     SmartDashboard.putNumber("Gyro", getGyroAngle());
     SmartDashboard.putNumber("Pitch", getGyroPitch());
