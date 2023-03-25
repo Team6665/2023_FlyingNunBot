@@ -40,8 +40,8 @@ public class RobotContainer {
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
       drivetrain.driveArcade(
-          MathUtil.applyDeadband(-driverController.getLeftY(), Constants.OIConstants.kDriveDeadband),
-          MathUtil.applyDeadband(driverController.getRightX()*Constants.DriveTrainConstants.kTurningScale, Constants.OIConstants.kDriveDeadband))
+          MathUtil.applyDeadband(driverController.getLeftY(), Constants.OIConstants.kDriveDeadband),
+          MathUtil.applyDeadband(-driverController.getRightX()*Constants.DriveTrainConstants.kTurningScale, Constants.OIConstants.kDriveDeadband))
       , drivetrain)
     );
 
