@@ -46,14 +46,16 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder backLeftEncoder;
   private RelativeEncoder backRightEncoder;
 
-  private RelativeEncoder leftEncoder;
-  private RelativeEncoder rightEncoder;
+  //private RelativeEncoder leftEncoder;
+  //private RelativeEncoder rightEncoder;
   
   private MotorControllerGroup leftMotors;
   private MotorControllerGroup rightMotors;
   
   private DifferentialDrive drive;
   public static double maxDriverSpeed = Constants.DriveTrainConstants.speedScale;
+  public static double leftEncoderDistance;
+  public static double rightEncoderDistance;
 
 
   public DriveTrainSubsystem() {
@@ -72,15 +74,15 @@ public class DriveTrainSubsystem extends SubsystemBase {
     backLeftEncoder = backLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     backRightEncoder = backRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
-    leftEncoder = frontLeftMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-    rightEncoder = frontRightMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-
     frontLeftPIDController = frontLeftMotor.getPIDController();
     frontRightPIDController = frontRightMotor.getPIDController();
     backLeftPIDController = backLeftMotor.getPIDController();
     backRightPIDController = backRightMotor.getPIDController();
 
-    // odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), getLeftEncoderDistance(), getRightEncoderDistance());
+    leftEncoderDistance = frontLeftEncoder.getPosition();
+    rightEncoderDistance = frontRightEncoder.getPosition();
+
+    odometry = new DifferentialDriveOdometry(gyro.getRotation2d(), leftEncoderDistance, rightEncoderDistance);
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
     rightMotors.setInverted(true);
@@ -88,9 +90,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
     drive.setDeadband(0.2); // Scales joystick values. 0.02 is the default
     drive.setMaxOutput(Constants.DriveTrainConstants.speedScale);
 
-    // leftEncoder.setDistancePerPulse(6.0 * 0.0254 * Math.PI / 2048); // 6 inch wheel, to meters, 2048 ticks
-    // rightEncoder.setDistancePerPulse(6.0 * 0.0254 * Math.PI / 2048); // 6 inch wheel, to meters, 2048 ticks
-    // encoderPID = new PIDController(9, 0, 0);
+    //encoderPID = new PIDController(9, 0, 0);
 
     gyro.reset();
 
@@ -188,22 +188,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     drive.arcadeDrive(xSpeed * maxDriverSpeed, maxDriverSpeed < 0 ? zRotation * maxDriverSpeed : -zRotation * maxDriverSpeed);
   }
 
-  // public void resetLeftEncoder() {
-  //     leftEncoder.reset();
-  // }
-
-  // public void resetRightEncoder() {
-  //     rightEncoder.reset();
-  // }
-
-  // public double getRightEncoderDistance() {
-  //     return rightEncoder.getDistance(); // Scaled to imperial from setDistancePerPulse
-  // }
-
-  // public double getLeftEncoderDistance() {
-  //     return leftEncoder.getDistance(); // Scaled to imperial from setDistancePerPulse
-  // }
-
   public Pose2d getPose() {
     return odometry.getPoseMeters();
   }
@@ -216,21 +200,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     return gyro.getPitch();
   }
   
-  // public void resetOdometry(Pose2d pose) {
-  //   odometry.resetPosition(gyro.getRotation2d(), getLeftEncoderDistance(), getRightEncoderDistance(), pose);
-  // }
+  public void resetOdometry(Pose2d pose) {
+    odometry.resetPosition(gyro.getRotation2d(), leftEncoderDistance, rightEncoderDistance, pose);
+  }
   
-
-  // public double getAverageEncoderDistance() {
-  //   return (leftEncoder.getDistance() + rightEncoder.getDistance()) / 2.0;
-  // }
+  public double getAverageEncoderDistance() {
+    return (frontLeftEncoder.getPosition() + frontRightEncoder.getPosition()) / 2.0;
+  }
   
   public RelativeEncoder getLeftEncoder() {
-    return leftEncoder;
+    return frontLeftEncoder;
   }
   
   public RelativeEncoder getRightEncoder() {
-    return rightEncoder;
+    return frontRightEncoder;
   }
   
   public void setMaxOutput(double maxOutput) {
@@ -251,11 +234,14 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // SubsystemBase native method
-    //odometry.update(gyro.getRotation2d(), leftEncoder.getDistance(), rightEncoder.getDistance());
+    //SubsystemBase native method
+    odometry.update(gyro.getRotation2d(), frontLeftEncoder.getPosition(), frontRightEncoder.getPosition());
     
     SmartDashboard.putNumber("Gyro", getGyroAngle());
     SmartDashboard.putNumber("Pitch", getGyroPitch());
+
+    SmartDashboard.putNumber("Front Left Encoder Distance", leftEncoderDistance);
+    SmartDashboard.putNumber("Front Right Encoder Distance", rightEncoderDistance);
     
     SmartDashboard.putNumber("Front Left Encoder Position", frontLeftEncoder.getPosition());
     SmartDashboard.putNumber("Front Right Encoder Position", frontRightEncoder.getPosition());
@@ -267,6 +253,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Back Left Encoder Velocity", backLeftEncoder.getVelocity());
     SmartDashboard.putNumber("Back Right Encoder Velocity", backRightEncoder.getVelocity());
 
-    // This method will be called once per scheduler run
+    //This method will be called once per scheduler run
   }
 }
