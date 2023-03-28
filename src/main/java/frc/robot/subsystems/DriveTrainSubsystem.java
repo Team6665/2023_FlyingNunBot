@@ -87,7 +87,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     rightMotors.setInverted(true);
 
-    drive.setDeadband(0.2); // Scales joystick values. 0.02 is the default
+    drive.setDeadband(0.02); // Scales joystick values. 0.02 is the default
     drive.setMaxOutput(Constants.DriveTrainConstants.speedScale);
 
     //encoderPID = new PIDController(9, 0, 0);
@@ -98,22 +98,22 @@ public class DriveTrainSubsystem extends SubsystemBase {
     //Motor specs
     frontLeftMotor.setInverted(Constants.DriveTrainConstants.kFrontLeftInverted);
     frontLeftMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
-    frontLeftMotor.setIdleMode(IdleMode.kBrake);
+    frontLeftMotor.setIdleMode(IdleMode.kCoast);
     frontLeftMotor.burnFlash();
 
     frontRightMotor.setInverted(Constants.DriveTrainConstants.kFrontRightInverted);
     frontRightMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
-    frontRightMotor.setIdleMode(IdleMode.kBrake);
+    frontRightMotor.setIdleMode(IdleMode.kCoast);
     frontRightMotor.burnFlash();
 
     backLeftMotor.setInverted(Constants.DriveTrainConstants.kRearLeftInverted);
     backLeftMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
-    backLeftMotor.setIdleMode(IdleMode.kBrake);
+    backLeftMotor.setIdleMode(IdleMode.kCoast);
     backLeftMotor.burnFlash();
 
     backRightMotor.setInverted(Constants.DriveTrainConstants.kRearRightInverted);
     backRightMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
-    backRightMotor.setIdleMode(IdleMode.kBrake);
+    backRightMotor.setIdleMode(IdleMode.kCoast);
     backRightMotor.burnFlash();
 
     //PIDControllerSpecs

@@ -45,6 +45,9 @@ public class RobotContainer {
       , drivetrain)
     );
 
+      //drivetrain.setDefaultCommand(new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), -driverController.getRightX()),drivetrain));
+
+
       //set up gripper open/close
       // new JoystickButton(driverController, XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(() -> claw.openGripper())).onFalse(new InstantCommand(() -> claw.closeGripper()));
   
