@@ -162,16 +162,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
     backRightPIDController.setSmartMotionAllowedClosedLoopError(Constants.DriveTrainPIDConstants.allowedErr, Constants.DriveTrainPIDConstants.backRightsmartMotionSlot);
   }
 
-  public void tankDrive(double leftSpeed, double rightSpeed) {
-    int leftSign = leftSpeed >= 0 ? 1 : -1; // Checks leftSpeed and gathers whether it is negative or positive
-    int rightSign = rightSpeed >= 0 ? 1 : -1; // Checks rightSpeed and gathers whether it is negative or positive
-
-    double leftPower = ((Constants.DriveTrainConstants.speedScale - Constants.DriveTrainConstants.minDrivePower) * Math.abs(leftSpeed) + Constants.DriveTrainConstants.minDrivePower) * leftSign;
-    double rightPower = ((Constants.DriveTrainConstants.speedScale - Constants.DriveTrainConstants.minDrivePower) * Math.abs(rightSpeed) + Constants.DriveTrainConstants.minDrivePower) * rightSign;
-
-    drive.tankDrive(leftPower, rightPower); // Calls WPILib DifferentialDrive method tankDrive(LSpeed, RSpeed)
-  }
-
   public void driveArcade(double _straight, double _turn) {
     double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
     double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
@@ -188,10 +178,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     drive.arcadeDrive(xSpeed * maxDriverSpeed, maxDriverSpeed < 0 ? zRotation * maxDriverSpeed : -zRotation * maxDriverSpeed);
   }
 
-  public Pose2d getPose() {
-    return odometry.getPoseMeters();
+  //Initialize Odometry
+
+
+  //Speed of Wheels
+  public double getRobotSpeed() {
+    return (frontLeftEncoder.getVelocity()+frontRightEncoder.getVelocity())/2*(1/10.71)*(2*Math.PI*3)*12;
   }
-  
+
+  //Distance Traveled
+  public double getAverageEncoderDistance() {
+    return (frontLeftEncoder.getPosition() + frontRightEncoder.getPosition()) / 2.0*(1/10.71)*(2*Math.PI*3)*12;
+  }
+
+  //Angle Turned
   public double getGyroAngle() {
     return gyro.getAngle() % 360.0;
   }
@@ -199,31 +199,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public double getGyroPitch() {
     return gyro.getPitch();
   }
-  
-  public void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(gyro.getRotation2d(), leftEncoderDistance, rightEncoderDistance, pose);
-  }
-  
-  public double getAverageEncoderDistance() {
-    return (frontLeftEncoder.getPosition() + frontRightEncoder.getPosition()) / 2.0;
-  }
-  
-  public RelativeEncoder getLeftEncoder() {
-    return frontLeftEncoder;
-  }
-  
-  public RelativeEncoder getRightEncoder() {
-    return frontRightEncoder;
-  }
-  
-  public void setMaxOutput(double maxOutput) {
-    drive.setMaxOutput(maxOutput);
-  }
 
-  public void zeroHeading() {
-    gyro.reset();
-  }
-  
   public double getHeading() {
     return gyro.getRotation2d().getDegrees();
   }
@@ -231,6 +207,27 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return -gyro.getRate();
   }
+
+  //Resetting Telemetry
+  public void zeroHeading() {
+    gyro.reset();
+  }
+
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
+  
+  public void resetOdometry(Pose2d pose) {
+    odometry.resetPosition(gyro.getRotation2d(), leftEncoderDistance, rightEncoderDistance, pose);
+  }
+
+  public void setMaxOutput(double maxOutput) {
+    drive.setMaxOutput(maxOutput);
+  }
+
+
+  
+
 
   @Override
   public void periodic() {
@@ -240,8 +237,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Gyro", getGyroAngle());
     SmartDashboard.putNumber("Pitch", getGyroPitch());
 
-    SmartDashboard.putNumber("Front Left Encoder Distance", leftEncoderDistance);
-    SmartDashboard.putNumber("Front Right Encoder Distance", rightEncoderDistance);
+    SmartDashboard.putNumber("Left Encoder Distance", leftEncoderDistance);
+    SmartDashboard.putNumber("Right Encoder Distance", rightEncoderDistance);
+    SmartDashboard.putNumber("Left Encoder Velocity", frontLeftEncoder.getVelocity());
+    SmartDashboard.putNumber("Right Encoder Velocity", frontRightEncoder.getVelocity());
     
     SmartDashboard.putNumber("Front Left Encoder Position", frontLeftEncoder.getPosition());
     SmartDashboard.putNumber("Front Right Encoder Position", frontRightEncoder.getPosition());

@@ -50,7 +50,7 @@ public class ClawSusbsystem extends SubsystemBase {
   }
 
   public void openGripper() {
-    setpoint = Constants.ClawConstants.kOpenPosition;//Constants.ClawConstants.kOpenPosition;
+    setpoint = Constants.ClawConstants.kOpenPosition;
   }
 
   public void closeGripper() {
