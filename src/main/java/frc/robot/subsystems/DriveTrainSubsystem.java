@@ -45,9 +45,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private RelativeEncoder frontRightEncoder;
   private RelativeEncoder backLeftEncoder;
   private RelativeEncoder backRightEncoder;
-
-  //private RelativeEncoder leftEncoder;
-  //private RelativeEncoder rightEncoder;
   
   private MotorControllerGroup leftMotors;
   private MotorControllerGroup rightMotors;
@@ -87,10 +84,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     rightMotors.setInverted(true);
 
-    drive.setDeadband(0.02); // Scales joystick values. 0.02 is the default
     drive.setMaxOutput(Constants.DriveTrainConstants.speedScale);
-
-    //encoderPID = new PIDController(9, 0, 0);
 
     gyro.reset();
 
@@ -98,22 +92,22 @@ public class DriveTrainSubsystem extends SubsystemBase {
     //Motor specs
     frontLeftMotor.setInverted(Constants.DriveTrainConstants.kFrontLeftInverted);
     frontLeftMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
-    frontLeftMotor.setIdleMode(IdleMode.kCoast);
+    frontLeftMotor.setIdleMode(IdleMode.kBrake);
     frontLeftMotor.burnFlash();
 
     frontRightMotor.setInverted(Constants.DriveTrainConstants.kFrontRightInverted);
     frontRightMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
-    frontRightMotor.setIdleMode(IdleMode.kCoast);
+    frontRightMotor.setIdleMode(IdleMode.kBrake);
     frontRightMotor.burnFlash();
 
     backLeftMotor.setInverted(Constants.DriveTrainConstants.kRearLeftInverted);
     backLeftMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
-    backLeftMotor.setIdleMode(IdleMode.kCoast);
+    backLeftMotor.setIdleMode(IdleMode.kBrake);
     backLeftMotor.burnFlash();
 
     backRightMotor.setInverted(Constants.DriveTrainConstants.kRearRightInverted);
     backRightMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
-    backRightMotor.setIdleMode(IdleMode.kCoast);
+    backRightMotor.setIdleMode(IdleMode.kBrake);
     backRightMotor.burnFlash();
 
     //PIDControllerSpecs
@@ -172,14 +166,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
     backRightMotor.set(right);
   }
 
-
   public void arcadeDrive(double xSpeed, double zRotation) {
     // Account for changes in turning when the forward direction changes, if it doesn't work use the one above
     drive.arcadeDrive(xSpeed * maxDriverSpeed, maxDriverSpeed < 0 ? zRotation * maxDriverSpeed : -zRotation * maxDriverSpeed);
   }
 
   //Initialize Odometry
+  public void zeroGyro() {
+    gyro.reset();
+  }
 
+  public void zeroEncoders() {
+    frontLeftEncoder.setPosition(0.0);
+    frontRightEncoder.setPosition(0.0);
+  }
 
   //Speed of Wheels
   public double getRobotSpeed() {
@@ -231,7 +231,6 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //SubsystemBase native method
     odometry.update(gyro.getRotation2d(), frontLeftEncoder.getPosition(), frontRightEncoder.getPosition());
     
     SmartDashboard.putNumber("Gyro", getGyroAngle());
@@ -239,19 +238,8 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Left Encoder Distance", leftEncoderDistance);
     SmartDashboard.putNumber("Right Encoder Distance", rightEncoderDistance);
+
     SmartDashboard.putNumber("Left Encoder Velocity", frontLeftEncoder.getVelocity());
     SmartDashboard.putNumber("Right Encoder Velocity", frontRightEncoder.getVelocity());
-    
-    SmartDashboard.putNumber("Front Left Encoder Position", frontLeftEncoder.getPosition());
-    SmartDashboard.putNumber("Front Right Encoder Position", frontRightEncoder.getPosition());
-    SmartDashboard.putNumber("Back Left Encoder Position", backLeftEncoder.getPosition());
-    SmartDashboard.putNumber("Back Right Encoder Position", backRightEncoder.getPosition());
-
-    SmartDashboard.putNumber("Front Left Encoder Velocity", frontLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("Front Right Encoder Velocity", frontRightEncoder.getVelocity());
-    SmartDashboard.putNumber("Back Left Encoder Velocity", backLeftEncoder.getVelocity());
-    SmartDashboard.putNumber("Back Right Encoder Velocity", backRightEncoder.getVelocity());
-
-    //This method will be called once per scheduler run
   }
 }

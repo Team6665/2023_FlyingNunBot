@@ -75,8 +75,7 @@ public final class Constants {
     public static final int frontLeftsmartMotionSlot = 0;
     public static final int frontRightsmartMotionSlot = 1;
     public static final int backLeftsmartMotionSlot = 2;
-    public static final int backRightsmartMotionSlot = 3;
-    
+    public static final int backRightsmartMotionSlot = 3;   
   }
 
   public static final class ClawConstants {
