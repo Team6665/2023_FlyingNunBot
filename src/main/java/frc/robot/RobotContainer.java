@@ -5,6 +5,8 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.DriveForwardCmd;
+import frc.robot.commands.AutoBasic;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ClawSusbsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -19,6 +21,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 
 public class RobotContainer {
@@ -57,18 +61,16 @@ public class RobotContainer {
       // new JoystickButton(driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> claw.closeGripper())).onFalse(new InstantCommand(() -> claw.stopGripperMotor()));
   
       //set up turret preset positions
-      //new JoystickButton(driverController, XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(() -> turret.rotateCCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
-      //new JoystickButton(driverController, XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(() -> turret.rotateCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
+      new JoystickButton(driverController, XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(() -> turret.rotateCCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
+      new JoystickButton(driverController, XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(() -> turret.rotateCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
       
-      // new JoystickButton(driverController, XboxController.Button.kY.value)
-      // .onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kIntakePosition, claw)));
-      // new JoystickButton(driverController, XboxController.Button.kB.value)
-      // .onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kFeederPosition, claw)));
+      // new JoystickButton(driverController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kIntakePosition, claw)));
+      // new JoystickButton(driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kFeederPosition, claw)));
     }
 
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    return null;
+    return new DriveForwardCmd(drivetrain, Constants.DriveTrainConstants.kAutoDriveForwardDistance);
+
   }
 
   public void periodic(){
