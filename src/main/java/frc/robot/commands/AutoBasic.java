@@ -10,22 +10,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class AutoBasic extends CommandBase {
-<<<<<<< HEAD
-  private final DriveTrainSubsystem driveSubsystem;
-  private final double speedFunction, turnFunction;
-
-  /** Creates a new AutoBasic. */
-  public AutoBasic(DriveTrainSubsystem driveSubsystem, double speedFunction, double turnFunction) {
-      this.speedFunction = speedFunction;
-      this.turnFunction = turnFunction;
-      this.driveSubsystem = driveSubsystem;
-      addRequirements(driveSubsystem);
-  }
-=======
 
     private final DriveTrainSubsystem driveSubsystem;
     private final Supplier<Double> speedFunction, turnFunction;
->>>>>>> ee0d4f967324467a4ba68583a1c589f3c8e76ec9
 
     public AutoBasic(DriveTrainSubsystem driveSubsystem,Supplier<Double> speedFunction, Supplier<Double> turnFunction) {
         this.speedFunction = speedFunction;
@@ -34,13 +21,6 @@ public class AutoBasic extends CommandBase {
         addRequirements(driveSubsystem);
     }
 
-<<<<<<< HEAD
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    double realTimeSpeed = speedFunction;
-        double realTimeTurn = turnFunction;
-=======
     @Override
     public void initialize() {
         System.out.println("ArcadeDriveCmd started!");
@@ -50,7 +30,6 @@ public class AutoBasic extends CommandBase {
     public void execute() {
         double realTimeSpeed = speedFunction.get();
         double realTimeTurn = turnFunction.get();
->>>>>>> ee0d4f967324467a4ba68583a1c589f3c8e76ec9
 
         double left = realTimeSpeed + realTimeTurn;
         double right = realTimeSpeed - realTimeTurn;

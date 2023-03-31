@@ -5,10 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
-<<<<<<< HEAD
-=======
 import frc.robot.commands.DriveForwardCmd;
->>>>>>> ee0d4f967324467a4ba68583a1c589f3c8e76ec9
 import frc.robot.commands.AutoBasic;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ClawSusbsystem;
@@ -72,13 +69,8 @@ public class RobotContainer {
     }
 
   public Command getAutonomousCommand() {
-<<<<<<< HEAD
-    // An example command will be run in autonomous
-    return new AutoBasic(drivetrain, 0.5, 0.0);
-=======
     return new DriveForwardCmd(drivetrain, Constants.DriveTrainConstants.kAutoDriveForwardDistance);
 
->>>>>>> ee0d4f967324467a4ba68583a1c589f3c8e76ec9
   }
 
   public void periodic(){
