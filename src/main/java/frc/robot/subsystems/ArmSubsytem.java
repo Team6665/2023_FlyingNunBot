@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel;
 
@@ -35,6 +36,7 @@ public class ArmSubsytem extends SubsystemBase {
   public ArmSubsytem() {
     elbowMotor = new CANSparkMax(Constants.ArmConstants.kElbowCanID, CANSparkMaxLowLevel.MotorType.kBrushless);
     elbowMotor.setInverted(false);
+    elbowMotor.setIdleMode(IdleMode.kBrake);
     elbowMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
     elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -51,8 +53,9 @@ public class ArmSubsytem extends SubsystemBase {
     elbowMotor.burnFlash();
 
 
-    shoulderMotor = new CANSparkMax(Constants.ArmConstants.kElbowCanID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    shoulderMotor = new CANSparkMax(Constants.ArmConstants.kShoulderCanID, CANSparkMaxLowLevel.MotorType.kBrushless);
     shoulderMotor.setInverted(false);
+    shoulderMotor.setIdleMode(IdleMode.kBrake);
     shoulderMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
     shoulderMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     shoulderMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
