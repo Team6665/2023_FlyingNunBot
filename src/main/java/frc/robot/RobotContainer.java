@@ -24,9 +24,9 @@ public class RobotContainer {
   private final XboxController driverController = new XboxController(OIConstants.DriverControllerPort);
   public static final LimelightSubsystem limelight = new LimelightSubsystem();
   // public static final ArmSubsytem arm = new ArmSubsytem();
-  // public static final ClawSusbsystem claw = new ClawSusbsystem();
+  public static final ClawSusbsystem claw = new ClawSusbsystem();
   // public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
-  // public static final TurretSubsystem turret = new TurretSubsystem();
+  public static final TurretSubsystem turret = new TurretSubsystem();
 
   public RobotContainer() {
     configureBindings();
@@ -47,15 +47,15 @@ public class RobotContainer {
 
       //drivetrain.setDefaultCommand(new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), -driverController.getRightX()),drivetrain));
 
-
+      
       //set up gripper open/close
-      // new JoystickButton(driverController, XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(() -> claw.openGripper())).onFalse(new InstantCommand(() -> claw.closeGripper()));
+      new JoystickButton(driverController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> claw.openGripper()));
+      new JoystickButton(driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> claw.closeGripper())).onFalse(new InstantCommand(() -> claw.stopGripperMotor()));
   
-      //set up arm preset positions
-      // new JoystickButton(driverController, XboxController.Button.kA.value)
-      // .onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kHomePosition, claw)));
-      // new JoystickButton(driverController, XboxController.Button.kX.value)
-      // .onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kScoringPosition, claw)));
+      //set up turret preset positions
+      new JoystickButton(driverController, XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(() -> turret.rotateCCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
+      new JoystickButton(driverController, XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(() -> turret.rotateCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
+      
       // new JoystickButton(driverController, XboxController.Button.kY.value)
       // .onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kIntakePosition, claw)));
       // new JoystickButton(driverController, XboxController.Button.kB.value)

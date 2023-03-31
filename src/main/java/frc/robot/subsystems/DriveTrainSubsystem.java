@@ -83,12 +83,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     drive = new DifferentialDrive(leftMotors, rightMotors);
 
     rightMotors.setInverted(true);
-
     drive.setMaxOutput(Constants.DriveTrainConstants.speedScale);
-
     gyro.reset();
-
-
+    
     //Motor specs
     frontLeftMotor.setInverted(Constants.DriveTrainConstants.kFrontLeftInverted);
     frontLeftMotor.setSmartCurrentLimit(Constants.DriveTrainConstants.kCurrentLimit);
@@ -224,11 +221,7 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public void setMaxOutput(double maxOutput) {
     drive.setMaxOutput(maxOutput);
   }
-
-
   
-
-
   @Override
   public void periodic() {
     odometry.update(gyro.getRotation2d(), frontLeftEncoder.getPosition(), frontRightEncoder.getPosition());

@@ -8,10 +8,16 @@ import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.lib.PIDGains;
 
+
 public final class Constants {
   public static class OIConstants {
     public static final int DriverControllerPort = 0;
     public static final double kDriveDeadband = 0.02;
+  }
+
+  public static class TurningConstants{
+    private static final double kAngleSetpoint = 0.0;
+    private static final double kP = 0.005; // propotional turning constant
   }
 
   public static final class DriveTrainConstants {
@@ -38,23 +44,40 @@ public final class Constants {
     public static final int previous_error = 0;
     public static final int setpoint = 0;
 
-    public static final int kCurrentLimit = 55;
+    public static final int kCurrentLimit = 50;
     public static final double kTurningScale = 0.5;
 
     public static final double speedScale = 0.8;
     public static final double minDrivePowerTurn = 0.35;
 
     public static final double minDrivePower = 0.1;
-    public static final double maxDriveSpeed = 0.7;
+    public static final double maxDriveSpeed = 0.8;
     public static final double maxSpeed = 3;
     public static final double maxAcceleration = 3;
 
     public static final double wheelDistance = 55; //cm
   }
 
-  public static class TurningConstants{
-    private static final double kAngleSetpoint = 0.0;
-    private static final double kP = 0.005; // propotional turning constant
+  public static class TurretConstants{
+    public static final int kTurretID = 6;
+    public static final int turretGearRatio = 462;
+    //All units in revs
+    public static final double kSoftLimitReverse = -30;
+    public static final double kSoftLimitForward = 30;
+    public static final double kStartPosition = 0.0;
+    public static final double kOpenPosition = -34.0;
+    public static final double kSafePosition = -29.0;
+    
+    public static final int kCurrentLimit = 30;
+
+    public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
+    public static final double speedScale = 0.8;
+  }
+
+  public static class ElevatorConstants{
+    public static final double elevatorGearRatio = 100;
+    
+
   }
 
   public static class DriveTrainPIDConstants{
@@ -80,12 +103,16 @@ public final class Constants {
 
   public static final class ClawConstants {
     public static final int kGripperCanId = 6;
+    public static final int clawGearRatio = 4;
+    //All units in revs
     public static final double kSoftLimitReverse = -34.0;
     public static final double kSoftLimitForward = 5.0;
     public static final double kClosePosition = 0.0;
     public static final double kOpenPosition = -34.0;
     public static final double kSafePosition = -29.0;
-    public static final int kCurrentLimit = 10;
+    
+    public static final int kCurrentLimit =30;
+
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
   }
 

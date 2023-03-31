@@ -14,6 +14,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.SparkMaxRelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
@@ -29,6 +30,7 @@ public class ClawSusbsystem extends SubsystemBase {
   public ClawSusbsystem() {
     clawMotor = new CANSparkMax(Constants.ClawConstants.kGripperCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
     clawMotor.setInverted(false);
+    clawMotor.setIdleMode(IdleMode.kBrake);
     clawMotor.setSmartCurrentLimit(Constants.ClawConstants.kCurrentLimit);
     clawMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     clawMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
@@ -45,6 +47,7 @@ public class ClawSusbsystem extends SubsystemBase {
     setpoint = Constants.ClawConstants.kClosePosition;
   }
 
+  //Set claw position
   public boolean isSafe() {
     return clawEncoder.getPosition() > Constants.ClawConstants.kSafePosition;
   }
@@ -55,6 +58,10 @@ public class ClawSusbsystem extends SubsystemBase {
 
   public void closeGripper() {
     setpoint = Constants.ClawConstants.kClosePosition;
+  }
+
+  public void stopGripperMotor(){
+    clawMotor.set(0.0);
   }
 
   @Override
