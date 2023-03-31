@@ -153,9 +153,9 @@ public class DriveTrainSubsystem extends SubsystemBase {
     backRightPIDController.setSmartMotionAllowedClosedLoopError(Constants.DriveTrainPIDConstants.allowedErr, Constants.DriveTrainPIDConstants.backRightsmartMotionSlot);
   }
 
-  public void driveArcade(double _straight, double _turn) {
-    double left  = MathUtil.clamp(_straight + _turn, -1.0, 1.0);
-    double right = MathUtil.clamp(_straight - _turn, -1.0, 1.0);
+  public void driveArcade(double straight, double turn) {
+    double left  = MathUtil.clamp(straight + turn, -1.0, 1.0);
+    double right = MathUtil.clamp(straight - turn, -1.0, 1.0);
 
     frontLeftMotor.set(left);
     frontRightMotor.set(right);
@@ -167,6 +167,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     // Account for changes in turning when the forward direction changes, if it doesn't work use the one above
     drive.arcadeDrive(xSpeed * maxDriverSpeed, maxDriverSpeed < 0 ? zRotation * maxDriverSpeed : -zRotation * maxDriverSpeed);
   }
+
+  public void setMotors(double leftSpeed, double rightSpeed) {
+    leftMotors.set(leftSpeed);
+    rightMotors.set(-rightSpeed);
+}
 
   //Initialize Odometry
   public void zeroGyro() {
@@ -197,6 +202,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
     return gyro.getPitch();
   }
 
+  public double getGyroYaw() {
+    return gyro.getYaw();
+  }
+
   public double getHeading() {
     return gyro.getRotation2d().getDegrees();
   }
@@ -221,13 +230,20 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public void setMaxOutput(double maxOutput) {
     drive.setMaxOutput(maxOutput);
   }
+
+  public double getSpeedScale(){
+    return Constants.DriveTrainConstants.speedScale;
+  }
   
   @Override
   public void periodic() {
     odometry.update(gyro.getRotation2d(), frontLeftEncoder.getPosition(), frontRightEncoder.getPosition());
+
+    SmartDashboard.putNumber("Speed Scaling", getSpeedScale());
     
     SmartDashboard.putNumber("Gyro", getGyroAngle());
     SmartDashboard.putNumber("Pitch", getGyroPitch());
+    SmartDashboard.putNumber("Yaw", getGyroYaw());
 
     SmartDashboard.putNumber("Left Encoder Distance", leftEncoderDistance);
     SmartDashboard.putNumber("Right Encoder Distance", rightEncoderDistance);

@@ -19,9 +19,9 @@ import frc.robot.Constants;
 import frc.robot.lib.PIDGains;
 
 public class ArmSubsytem extends SubsystemBase {
-  private CANSparkMax armMotor;
-  private RelativeEncoder armEncoder;
-  private SparkMaxPIDController armController;
+  private CANSparkMax shoulderMotor, elbowMotor;
+  private RelativeEncoder shoulderEncoder, elbowEncoder;
+  private SparkMaxPIDController shoulderController, elbowController;
   private double setpoint;
 
   private TrapezoidProfile profile;
@@ -33,22 +33,41 @@ public class ArmSubsytem extends SubsystemBase {
   
   /** Creates a new ArmSubsytem. */
   public ArmSubsytem() {
-    armMotor = new CANSparkMax(Constants.ArmConstants.kArmCanId, CANSparkMaxLowLevel.MotorType.kBrushless);
-    armMotor.setInverted(false);
-    armMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
-    armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ArmConstants.kSoftLimitForward);
-    armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ArmConstants.kSoftLimitReverse);
+    elbowMotor = new CANSparkMax(Constants.ArmConstants.kElbowCanID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    elbowMotor.setInverted(false);
+    elbowMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
+    elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    elbowMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ArmConstants.kSoftLimitForward);
+    elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ArmConstants.kSoftLimitReverse);
 
-    armEncoder = armMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
-    armEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
-    armEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
+    elbowEncoder = elbowMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    elbowEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
+    elbowEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
 
-    armController = armMotor.getPIDController();
-    PIDGains.setSparkMaxGains(armController, Constants.ArmConstants.kArmPositionGains);
+    elbowController = elbowMotor.getPIDController();
+    PIDGains.setSparkMaxGains(elbowController, Constants.ArmConstants.kArmPositionGains);
 
-    armMotor.burnFlash();
+    elbowMotor.burnFlash();
+
+
+    shoulderMotor = new CANSparkMax(Constants.ArmConstants.kElbowCanID, CANSparkMaxLowLevel.MotorType.kBrushless);
+    shoulderMotor.setInverted(false);
+    shoulderMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
+    shoulderMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    shoulderMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    shoulderMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ArmConstants.kSoftLimitForward);
+    shoulderMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ArmConstants.kSoftLimitReverse);
+
+    shoulderEncoder = shoulderMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    shoulderEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
+    shoulderEncoder.setVelocityConversionFactor(Constants.ArmConstants.kVelocityFactor);
+
+    shoulderController = shoulderMotor.getPIDController();
+    PIDGains.setSparkMaxGains(shoulderController, Constants.ArmConstants.kArmPositionGains);
+
+    shoulderMotor.burnFlash();
+
 
     setpoint = Constants.ArmConstants.kHomePosition;
 
@@ -67,7 +86,7 @@ public class ArmSubsytem extends SubsystemBase {
   }
 
   private void updateMotionProfile() {
-    TrapezoidProfile.State state = new TrapezoidProfile.State(armEncoder.getPosition(), armEncoder.getVelocity());
+    TrapezoidProfile.State state = new TrapezoidProfile.State(shoulderEncoder.getPosition(), shoulderEncoder.getVelocity());
     TrapezoidProfile.State goal = new TrapezoidProfile.State(setpoint, 0.0);
     profile = new TrapezoidProfile(Constants.ArmConstants.kArmMotionConstraint, goal, state);
     timer.reset();
@@ -82,18 +101,18 @@ public class ArmSubsytem extends SubsystemBase {
       targetState = profile.calculate(elapsedTime);
     }
 
-    feedforward = Constants.ArmConstants.kArmFeedforward.calculate(armEncoder.getPosition()+Constants.ArmConstants.kArmZeroCosineOffset, targetState.velocity);
-    armController.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
+    feedforward = Constants.ArmConstants.kArmFeedforward.calculate(shoulderEncoder.getPosition()+Constants.ArmConstants.kArmZeroCosineOffset, targetState.velocity);
+    elbowController.setReference(targetState.position, CANSparkMax.ControlType.kPosition, 0, feedforward);
   }
 
   public void runManual(double _power) {
     //reset and zero out a bunch of automatic mode stuff so exiting manual mode happens cleanly and passively
-    setpoint = armEncoder.getPosition();
+    setpoint = shoulderEncoder.getPosition();
     targetState = new TrapezoidProfile.State(setpoint, 0.0);
     profile = new TrapezoidProfile(Constants.ArmConstants.kArmMotionConstraint, targetState, targetState);
     //update the feedforward variable with the newly zero target velocity
-    feedforward = Constants.ArmConstants.kArmFeedforward.calculate(armEncoder.getPosition()+Constants.ArmConstants.kArmZeroCosineOffset, targetState.velocity);
-    armMotor.set(_power + (feedforward / 12.0));
+    feedforward = Constants.ArmConstants.kArmFeedforward.calculate(shoulderEncoder.getPosition()+Constants.ArmConstants.kArmZeroCosineOffset, targetState.velocity);
+    elbowMotor.set(_power + (feedforward / 12.0));
     manualValue = _power;
   }
 
@@ -106,8 +125,8 @@ public class ArmSubsytem extends SubsystemBase {
   public void initSendable(SendableBuilder builder) {
     super.initSendable(builder);
     builder.addDoubleProperty("Final Setpoint",  () -> setpoint, null);
-    builder.addDoubleProperty("Position", () -> armEncoder.getPosition(), null);
-    builder.addDoubleProperty("Applied Output", () -> armMotor.getAppliedOutput(), null);
+    builder.addDoubleProperty("Position", () -> shoulderEncoder.getPosition(), null);
+    builder.addDoubleProperty("Applied Output", () -> elbowMotor.getAppliedOutput(), null);
     builder.addDoubleProperty("Elapsed Time", () -> timer.get(), null);
     /*builder.addDoubleProperty("Target Position", () -> targetState.position, null);
     builder.addDoubleProperty("Target Velocity", () -> targetState.velocity, null);*/

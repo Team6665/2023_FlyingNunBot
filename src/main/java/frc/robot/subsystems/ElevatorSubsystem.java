@@ -17,6 +17,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorSubsystem extends SubsystemBase {
   private CANSparkMax elevatorMotor;
@@ -46,8 +47,16 @@ public class ElevatorSubsystem extends SubsystemBase {
     
   }
 
+  public double getElevatorSpeed() {
+    return (elevatorEncoder.getVelocity()*(1/10.71));
+  }
+
+  public void setMotor(double speed) {
+    elevatorMotor.set(speed);
+  }
+
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Elevator", getElevatorSpeed());
   }
 }

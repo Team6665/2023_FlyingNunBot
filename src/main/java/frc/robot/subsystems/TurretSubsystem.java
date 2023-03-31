@@ -39,6 +39,7 @@ public class TurretSubsystem extends SubsystemBase {
     turretMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.TurretConstants.kSoftLimitReverse);
 
     turretEncoder = turretMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
+    //turretEncoder.setP(Constants.TurretConstants.kP);
     turretEncoder.setPosition(0.0);
 
     turretController = turretMotor.getPIDController();
@@ -64,10 +65,6 @@ public class TurretSubsystem extends SubsystemBase {
     turretMotor.set(0.0);
   }
 
-
-
-
-
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Turret Position", turretEncoder.getPosition());
@@ -77,3 +74,51 @@ public class TurretSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 }
+
+// public class Turret {
+
+//   // Define Spark motor controller object and port number
+//   private Spark turretMotor;
+
+//   // Define Encoder object and port numbers
+//   private Encoder turretEncoder;
+
+//   // Define PID controller object and constants
+//   private PIDController turretPID;
+//   private final double kP = 0.1;
+//   private final double kI = 0.0;
+//   private final double kD = 0.0;
+//   private final double kF = 0.0;
+
+  // Constructor method
+  // public Turret(int motorPort, int encoderPortA, int encoderPortB) {
+  //   // Create motor controller and encoder objects
+  //   turretMotor = new Spark(motorPort);
+  //   turretEncoder = new Encoder(encoderPortA, encoderPortB, true, Encoder.EncodingType.k4X);
+
+  //   // Set up encoder and PID controller
+  //   turretEncoder.setReverseDirection(true);
+  //   turretEncoder.setSamplesToAverage(10);
+  //   turretPID = new PIDController(kP, kI, kD, kF, turretEncoder, turretMotor);
+  //   turretPID.setAbsoluteTolerance(0.5); // Set PID tolerance to 0.5 degrees
+  //   turretPID.setOutputRange(-0.5, 0.5); // Set PID output range to -0.5 to 0.5
+  //   turretPID.setSetpoint(0); // Set initial setpoint to 0
+  // }
+
+  // // Method to set the turret setpoint
+  // public void setSetpoint(double setpoint) {
+  //   turretPID.setSetpoint(setpoint);
+  // }
+
+  // // Method to get the turret output
+  // public double getOutput() {
+  //   return turretPID.get();
+  // }
+
+  // // Method to reset the turret encoder count
+  // public void resetEncoder() {
+  //   turretEncoder.reset();
+  // }
+
+// }
+

@@ -12,6 +12,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,10 +25,10 @@ public class RobotContainer {
   private final DriveTrainSubsystem drivetrain = new DriveTrainSubsystem();
   private final XboxController driverController = new XboxController(OIConstants.DriverControllerPort);
   public static final LimelightSubsystem limelight = new LimelightSubsystem();
-  //public static final ArmSubsytem arm = new ArmSubsytem();
+  public static final ArmSubsytem arm = new ArmSubsytem();
   public static final ClawSusbsystem claw = new ClawSusbsystem();
-  //public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
-  //public static final TurretSubsystem turret = new TurretSubsystem();
+  public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
+  public static final TurretSubsystem turret = new TurretSubsystem();
 
   public RobotContainer() {
     configureBindings();
@@ -46,12 +47,14 @@ public class RobotContainer {
       , drivetrain)
     );
 
+      //new JoystickButton(driverController, XboxController.Button.kStart.value).
+
       //drivetrain.setDefaultCommand(new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), -driverController.getRightX()),drivetrain));
 
       
       //set up gripper open/close
-      //new JoystickButton(driverController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> claw.openGripper()));
-      //new JoystickButton(driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> claw.closeGripper())).onFalse(new InstantCommand(() -> claw.stopGripperMotor()));
+      // new JoystickButton(driverController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> claw.openGripper()));
+      // new JoystickButton(driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> claw.closeGripper())).onFalse(new InstantCommand(() -> claw.stopGripperMotor()));
   
       //set up turret preset positions
       //new JoystickButton(driverController, XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(() -> turret.rotateCCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
