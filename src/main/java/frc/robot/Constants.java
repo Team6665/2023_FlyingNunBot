@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.lib.PIDGains;
@@ -66,7 +68,8 @@ public final class Constants {
     public static final double maxAcceleration = 3;
 
     public static final double wheelDistance = 55; //cm
-    public static final double kAutoDriveForwardSpeed = 0;
+    public static final double kAutoDriveForwardSpeed = 0.6;
+    public static final double kAutoDriveForwardDistance = 10;
   }
 
 
