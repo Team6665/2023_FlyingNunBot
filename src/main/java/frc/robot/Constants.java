@@ -12,7 +12,7 @@ import frc.robot.lib.PIDGains;
 public final class Constants {
   public static class OIConstants {
     public static final int DriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.02;
+    public static final double kDriveDeadband = 0.2;
   }
 
   public static class TurningConstants{
@@ -59,7 +59,7 @@ public final class Constants {
   }
 
   public static class TurretConstants{
-    public static final int kTurretID = 6;
+    public static final int kTurretID = 3;
     public static final int turretGearRatio = 462;
     //All units in revs
     public static final double kSoftLimitReverse = -30;
@@ -75,7 +75,18 @@ public final class Constants {
   }
 
   public static class ElevatorConstants{
+    public static final int kElevatorCanID = 1;
     public static final double elevatorGearRatio = 100;
+    //All units in revs
+    public static final double kSoftLimitReverse = -34.0;
+    public static final double kSoftLimitForward = 5.0;
+    public static final double kClosePosition = 0.0;
+    public static final double kOpenPosition = -34.0;
+    public static final double kSafePosition = -29.0;
+    
+    public static final int kCurrentLimit =30;
+
+    public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
     
 
   }
@@ -102,7 +113,7 @@ public final class Constants {
   }
 
   public static final class ClawConstants {
-    public static final int kGripperCanId = 6;
+    public static final int kGripperCanId = 5;
     public static final int clawGearRatio = 4;
     //All units in revs
     public static final double kSoftLimitReverse = -34.0;
@@ -117,7 +128,9 @@ public final class Constants {
   }
 
   public static final class ArmConstants {
-    public static final int kArmCanId = 5;
+    public static final int kElbowCanID = 2;//elbow;
+    public static final int kShoulderCanID = 4;//
+
     public static final boolean kArmInverted = false;
     public static final int kCurrentLimit = 40;
 
