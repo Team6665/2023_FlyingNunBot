@@ -4,49 +4,45 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import java.util.function.Supplier;
+
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrainSubsystem;
 
 public class AutoBasic extends CommandBase {
-  private final DriveTrainSubsystem driveSubsystem;
-  private final Supplier<Double> speedFunction, turnFunction;
 
-  /** Creates a new AutoBasic. */
-  public AutoBasic(DriveTrainSubsystem driveSubsystem, Supplier<Double> speedFunction, Supplier<Double> turnFunction) {
-      this.speedFunction = speedFunction;
-      this.turnFunction = turnFunction;
-      this.driveSubsystem = driveSubsystem;
-      addRequirements(driveSubsystem);
-  }
+    private final DriveTrainSubsystem driveSubsystem;
+    private final Supplier<Double> speedFunction, turnFunction;
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-      System.out.println("AutoBasic started!");
-  }
+    public AutoBasic(DriveTrainSubsystem driveSubsystem,Supplier<Double> speedFunction, Supplier<Double> turnFunction) {
+        this.speedFunction = speedFunction;
+        this.turnFunction = turnFunction;
+        this.driveSubsystem = driveSubsystem;
+        addRequirements(driveSubsystem);
+    }
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    double realTimeSpeed = speedFunction.get();
+    @Override
+    public void initialize() {
+        System.out.println("ArcadeDriveCmd started!");
+    }
+
+    @Override
+    public void execute() {
+        double realTimeSpeed = speedFunction.get();
         double realTimeTurn = turnFunction.get();
 
         double left = realTimeSpeed + realTimeTurn;
         double right = realTimeSpeed - realTimeTurn;
         driveSubsystem.setMotors(left, right);
-  }
+    }
 
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {
-    System.out.println("AutoBasic ended!");
+    @Override
+    public void end(boolean interrupted) {
+        System.out.println("ArcadeDriveCmd ended!");
+    }
 
-  }
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
 }
