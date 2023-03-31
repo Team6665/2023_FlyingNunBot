@@ -14,7 +14,7 @@ import frc.robot.lib.PIDGains;
 public final class Constants {
   public static class OIConstants {
     public static final int DriverControllerPort = 0;
-    public static final double kDriveDeadband = 0.15;
+    public static final double kDriveDeadband = 0.05;
   }
 
   public static class TurningConstants{
@@ -59,7 +59,7 @@ public final class Constants {
     public static final int kCurrentLimit = 50;
     public static final double kTurningScale = 0.5;
 
-    public static final double speedScale = 0.6;
+    public static final double speedScale = 0.8;
     public static final double minDrivePowerTurn = 0.35;
 
     public static final double minDrivePower = 0.1;
@@ -69,7 +69,7 @@ public final class Constants {
 
     public static final double wheelDistance = 55; //cm
     public static final double kAutoDriveForwardSpeed = 0.6;
-    public static final double kAutoDriveForwardDistance = 10;
+    public static final double kAutoDriveForwardDistance = 8*(1/10.71)*(2*Math.PI)*.25;
   }
 
 

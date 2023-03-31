@@ -14,6 +14,7 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.TurretSubsystem;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,8 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+
 
 
 public class RobotContainer {
@@ -43,13 +43,15 @@ public class RobotContainer {
 
   private void configureBindings() {
 
+    SlewRateLimiter filter = new SlewRateLimiter(0.5);
+
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
       drivetrain.driveArcade(
-          MathUtil.applyDeadband(driverController.getLeftY(), Constants.OIConstants.kDriveDeadband),
+          filter.calculate(MathUtil.applyDeadband(driverController.getLeftY(), Constants.OIConstants.kDriveDeadband)),
           MathUtil.applyDeadband(-driverController.getRightX()*Constants.DriveTrainConstants.kTurningScale, Constants.OIConstants.kDriveDeadband))
       , drivetrain)
-    );
+      );
 
       //new JoystickButton(driverController, XboxController.Button.kStart.value).
 
