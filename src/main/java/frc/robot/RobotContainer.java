@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.AutoBasic;
 import frc.robot.subsystems.ArmSubsytem;
 import frc.robot.subsystems.ClawSusbsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
@@ -25,7 +26,7 @@ public class RobotContainer {
   private final DriveTrainSubsystem drivetrain = new DriveTrainSubsystem();
   private final XboxController driverController = new XboxController(OIConstants.DriverControllerPort);
   public static final LimelightSubsystem limelight = new LimelightSubsystem();
-  public static final ArmSubsytem arm = new ArmSubsytem();
+  //public static final ArmSubsytem arm = new ArmSubsytem();
   public static final ClawSusbsystem claw = new ClawSusbsystem();
   public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
   public static final TurretSubsystem turret = new TurretSubsystem();
@@ -68,7 +69,7 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return new AutoBasic(drivetrain, 0.5, 0.0);
   }
 
   public void periodic(){
