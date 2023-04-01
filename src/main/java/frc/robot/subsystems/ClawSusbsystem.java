@@ -53,11 +53,11 @@ public class ClawSusbsystem extends SubsystemBase {
   }
 
   public void openGripper() {
-    setpoint = Constants.ClawConstants.kOpenPosition;
+    clawMotor.set(0.5);
   }
 
   public void closeGripper() {
-    setpoint = Constants.ClawConstants.kClosePosition;
+    clawMotor.set(-0.5);
   }
 
   public void stopGripperMotor(){

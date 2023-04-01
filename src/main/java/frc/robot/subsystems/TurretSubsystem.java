@@ -54,11 +54,11 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   public void rotateCCW() {
-    turretMotor.set(Constants.TurretConstants.speedScale);
+    turretMotor.set(0.5);
   }
 
   public void rotateCW() {
-    turretMotor.set((-Constants.TurretConstants.speedScale));
+    turretMotor.set(-0.5);
   }
 
   public void stopTurretMotor() {

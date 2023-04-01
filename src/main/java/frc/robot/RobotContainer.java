@@ -43,24 +43,23 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    SlewRateLimiter filter = new SlewRateLimiter(0.5);
+    //SlewRateLimiter filter = new SlewRateLimiter(0.25);
 
     drivetrain.setDefaultCommand(new RunCommand(
       () -> 
       drivetrain.driveArcade(
-          filter.calculate(MathUtil.applyDeadband(driverController.getLeftY(), Constants.OIConstants.kDriveDeadband)),
+          MathUtil.applyDeadband(driverController.getLeftY(), Constants.OIConstants.kDriveDeadband),
           MathUtil.applyDeadband(-driverController.getRightX()*Constants.DriveTrainConstants.kTurningScale, Constants.OIConstants.kDriveDeadband))
       , drivetrain)
       );
 
-      //new JoystickButton(driverController, XboxController.Button.kStart.value).
 
       //drivetrain.setDefaultCommand(new RunCommand(() -> drivetrain.arcadeDrive(-driverController.getLeftY(), -driverController.getRightX()),drivetrain));
 
       
       //set up gripper open/close
-      // new JoystickButton(driverController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> claw.openGripper()));
-      // new JoystickButton(driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> claw.closeGripper())).onFalse(new InstantCommand(() -> claw.stopGripperMotor()));
+      new JoystickButton(driverController, XboxController.Button.kA.value).onTrue(new InstantCommand(() -> claw.openGripper()));
+      new JoystickButton(driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> claw.closeGripper())).onFalse(new InstantCommand(() -> claw.stopGripperMotor()));
   
       //set up turret preset positions
       new JoystickButton(driverController, XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(() -> turret.rotateCCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
@@ -71,8 +70,7 @@ public class RobotContainer {
     }
 
   public Command getAutonomousCommand() {
-    return new DriveForwardCmd(drivetrain, Constants.DriveTrainConstants.kAutoDriveForwardDistance);
-
+    return new AutoBasic(drivetrain, 0.3, 0.1);
   }
 
   public void periodic(){

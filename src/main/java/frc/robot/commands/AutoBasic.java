@@ -12,9 +12,9 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 public class AutoBasic extends CommandBase {
 
     private final DriveTrainSubsystem driveSubsystem;
-    private final Supplier<Double> speedFunction, turnFunction;
+    private final double speedFunction, turnFunction;
 
-    public AutoBasic(DriveTrainSubsystem driveSubsystem,Supplier<Double> speedFunction, Supplier<Double> turnFunction) {
+    public AutoBasic(DriveTrainSubsystem driveSubsystem,double speedFunction, double turnFunction) {
         this.speedFunction = speedFunction;
         this.turnFunction = turnFunction;
         this.driveSubsystem = driveSubsystem;
@@ -28,8 +28,8 @@ public class AutoBasic extends CommandBase {
 
     @Override
     public void execute() {
-        double realTimeSpeed = speedFunction.get();
-        double realTimeTurn = turnFunction.get();
+        double realTimeSpeed = speedFunction;
+        double realTimeTurn = turnFunction;
 
         double left = realTimeSpeed + realTimeTurn;
         double right = realTimeSpeed - realTimeTurn;
