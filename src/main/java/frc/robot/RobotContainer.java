@@ -29,7 +29,7 @@ public class RobotContainer {
   private final DriveTrainSubsystem drivetrain = new DriveTrainSubsystem();
   private final XboxController driverController = new XboxController(OIConstants.DriverControllerPort);
   public static final LimelightSubsystem limelight = new LimelightSubsystem();
-  //public static final ArmSubsytem arm = new ArmSubsytem();
+  public static final ArmSubsytem arm = new ArmSubsytem();
   public static final ClawSusbsystem claw = new ClawSusbsystem();
   public static final ElevatorSubsystem elevator = new ElevatorSubsystem();
   public static final TurretSubsystem turret = new TurretSubsystem();
@@ -65,12 +65,12 @@ public class RobotContainer {
       new JoystickButton(driverController, XboxController.Button.kLeftBumper.value).onTrue(new InstantCommand(() -> turret.rotateCCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
       new JoystickButton(driverController, XboxController.Button.kRightBumper.value).onTrue(new InstantCommand(() -> turret.rotateCW())).onFalse(new InstantCommand(() -> turret.stopTurretMotor()));
       
-      // new JoystickButton(driverController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kIntakePosition, claw)));
-      // new JoystickButton(driverController, XboxController.Button.kB.value).onTrue(new InstantCommand(() -> arm.setTargetPosition(Constants.ArmConstants.kFeederPosition, claw)));
+      new JoystickButton(driverController, XboxController.Button.kY.value).onTrue(new InstantCommand(() -> arm.moveElbowUp())).onFalse(new InstantCommand(() -> arm.stopElbowMotor()));
+      new JoystickButton(driverController, XboxController.Button.kX.value).onTrue(new InstantCommand(() -> arm.moveElbowDown())).onFalse(new InstantCommand(() -> arm.stopElbowMotor()));
     }
 
   public Command getAutonomousCommand() {
-    return new AutoBasic(drivetrain, 0.3, 0.1);
+    return null;// new AutoBasic(drivetrain, 0.3, 0.1);
   }
 
   public void periodic(){

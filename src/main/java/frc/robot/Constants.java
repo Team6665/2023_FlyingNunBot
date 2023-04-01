@@ -151,7 +151,7 @@ public final class Constants {
     public static final double kOpenPosition = -34.0;
     public static final double kSafePosition = -29.0;
     
-    public static final int kCurrentLimit =30;
+    public static final int kCurrentLimit =60;
 
     public static final PIDGains kPositionPIDGains = new PIDGains(0.2, 0.0, 0.0);
   }

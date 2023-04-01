@@ -32,11 +32,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     elevatorMotor.setInverted(false);
     elevatorMotor.setIdleMode(IdleMode.kBrake);
     elevatorMotor.setSmartCurrentLimit(Constants.ElevatorConstants.kCurrentLimit);
-    elevatorMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    elevatorMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    elevatorMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ElevatorConstants.kSoftLimitForward);
-    elevatorMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ElevatorConstants.kSoftLimitReverse);
-
+   
     elevatorEncoder = elevatorMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
 
     elevatorController = elevatorMotor.getPIDController();

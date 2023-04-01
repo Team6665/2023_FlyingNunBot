@@ -37,11 +37,11 @@ public class ArmSubsytem extends SubsystemBase {
     elbowMotor = new CANSparkMax(Constants.ArmConstants.kElbowCanID, CANSparkMaxLowLevel.MotorType.kBrushless);
     elbowMotor.setInverted(false);
     elbowMotor.setIdleMode(IdleMode.kBrake);
-    elbowMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
-    elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    elbowMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ArmConstants.kSoftLimitForward);
-    elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ArmConstants.kSoftLimitReverse);
+    // elbowMotor.setSmartCurrentLimit(Constants.ArmConstants.kCurrentLimit);
+    // elbowMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    // elbowMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    // elbowMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.ArmConstants.kSoftLimitForward);
+    // elbowMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.ArmConstants.kSoftLimitReverse);
 
     elbowEncoder = elbowMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     elbowEncoder.setPositionConversionFactor(Constants.ArmConstants.kPositionFactor);
@@ -79,6 +79,18 @@ public class ArmSubsytem extends SubsystemBase {
     timer.reset();
 
     updateMotionProfile();
+  }
+
+  public void moveElbowUp(){
+    elbowMotor.set(0.5);
+  }
+
+  public void moveElbowDown(){
+    elbowMotor.set(-0.5);
+  }
+
+  public void stopElbowMotor(){
+    elbowMotor.set(0.0);
   }
 
   public void setTargetPosition(double _setpoint, ClawSusbsystem _claw) {

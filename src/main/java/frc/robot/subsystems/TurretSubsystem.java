@@ -32,11 +32,7 @@ public class TurretSubsystem extends SubsystemBase {
     turretMotor = new CANSparkMax(Constants.TurretConstants.kTurretID, CANSparkMaxLowLevel.MotorType.kBrushless);
     turretMotor.setInverted(false);
     turretMotor.setIdleMode(IdleMode.kBrake);
-    turretMotor.setSmartCurrentLimit(Constants.TurretConstants.kCurrentLimit);
-    turretMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
-    turretMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    turretMotor.setSoftLimit(SoftLimitDirection.kForward, (float)Constants.TurretConstants.kSoftLimitForward);
-    turretMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)Constants.TurretConstants.kSoftLimitReverse);
+
 
     turretEncoder = turretMotor.getEncoder(SparkMaxRelativeEncoder.Type.kHallSensor, 42);
     //turretEncoder.setP(Constants.TurretConstants.kP);
